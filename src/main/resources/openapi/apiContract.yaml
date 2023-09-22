@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: DMT Post Processing API
+  description: |-
+    This API is focused on delivering endpoints ready to start the DMT Post Processing
+  version: 1.0.11
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: Point
+    description: API for related Point matters
+paths:
+  /points:
+    get:
+      tags:
+        - Point
+      summary: Get the list of all available Points
+      description: Get the list of all available Points
+      operationId: getAllPoints
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Points'
+        '400':
+          description: Invalid tag value
+components:
+  schemas:
+    Page:
+      title: Page
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        itemCount:
+          type: integer
+    Points:
+      title: Points
+      type: object
+      properties:
+        items:
+          type: array
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/Point'
+        page:
+          $ref: '#/components/schemas/Page'
+    Point:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        country:
+          type: string
+        status:
+          type: integer
+        level:
+          type: integer
+        workflow:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        altitude:
+          type: number
+          format: double
+  parameters:
+    pageNumber:
+      name: pageNumber
+      in: query
+      required: false
+      schema:
+        type: integer
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
